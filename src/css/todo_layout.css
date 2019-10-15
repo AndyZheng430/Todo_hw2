@@ -112,26 +112,16 @@ body {
 .list_item_card_completed, .list_item_card_not_completed {
   left: 66%;
 }
-.list_item_up_arrow {
+.list_item_button_container {
+  display: inline-block;
+  position: relative;
   top: 5%;
   left: 80%;
-  position: relative;
-  text-align: center;
-  display: inline-block;
+  padding: 0px 5px;
 }
-.list_item_down_arrow {
-  top: 5%;
-  left: 81%;
-  position: relative;
+.list_item_up_arrow, .list_item_down_arrow, .list_item_delete {
   text-align: center;
-  display: inline-block;
-}
-.list_item_delete {
-  top: 15%;
-  left: 82%;
-  position: relative;
-  text-align: center;
-  display: inline-block;
+  vertical-align: center;
 }
 .list_item_card_toolbar {
   position: absolute;
@@ -150,6 +140,13 @@ body {
 .list_item_add_card {
   text-align: center;
   vertical-align: center;
+}
+.list_item_add_button {
+  width: 100%;
+  text-align: center;
+  vertical-align: center;
+  border-radius: 5px;
+  border-style: none;
 }
 
 /* ITEM SCREEN CONTROLS */

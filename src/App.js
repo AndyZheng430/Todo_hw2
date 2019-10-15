@@ -22,6 +22,14 @@ class App extends Component {
     this.setState({currentList: null});
   }
 
+  removeList = () => {
+    this.setState({currentScreen: AppScreen.HOME_SCREEN});
+    this.state.todoLists.splice(this.state.currentList.key, 1);
+    for(var i = 0; i < this.state.todoLists.length; i++) {
+      this.state.todoLists[i].key = i;
+    }
+  }
+
   loadList = (todoListToLoad) => {
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
     this.setState({currentList: todoListToLoad});
@@ -38,9 +46,12 @@ class App extends Component {
       case AppScreen.LIST_SCREEN:            
         return <ListScreen
           goHome={this.goHome.bind(this)}
-          todoList={this.state.currentList} />;
+          todoList={this.state.currentList} 
+          removeList={this.removeList}
+          />;
       case AppScreen.ITEM_SCREEN:
-        return <ItemScreen />;
+        return <ItemScreen 
+          />;
       default:
         return <div>ERROR</div>;
     }
