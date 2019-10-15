@@ -106,6 +106,9 @@ body {
 .list_item_header_card {
   background-color: var(--swatch-accent);
 }
+#list_item_header{
+  background-color: green;
+}
 .list_item_task_header, .list_item_due_date_header, .list_item_status_header {
   font-weight: bold;
   font-size: 24pt;
@@ -132,6 +135,14 @@ body {
 }
 .list_item_card_not_completed {
   color: red;
+}
+.list_item_up_arrow, .list_item_down_arrow, .list_item_delete {
+  height: 40px;
+  width: 40px;
+  font-size: 30px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: green;
 }
 .list_item_card_toolbar {}
 .list_item_card_button {
