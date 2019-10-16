@@ -5,13 +5,17 @@ export class ListItemCard extends Component {
 
     // Prints Completed or Pending if the item is completed or not.
     printCompleted = () => {
-        return this.props.listItem.completed==true ? 'Completed': 'Pending'
+        return this.props.listItem.completed==true ? 'Completed': 'Pending';
     }
-    
+
+    showDisabledUp = () => {
+        return this.props.listItem.key == 0? 'list_item_up_arrow disabled': 'list_item_up_arrow';
+    }
+
     render() {
         const { key } = this.props.listItem;
         return (
-            <div className='list_item_card'>
+            <div className='list_item_card' onClick={this.props.editListItem.bind(this, key)}>
                 <div className='list_item_card_description'>
                     {this.props.listItem.description}
                 </div>
@@ -24,17 +28,17 @@ export class ListItemCard extends Component {
                 <div className='list_item_card_completed'>
                     {this.printCompleted()}
                 </div>
-                <div className='list_item_button_container'>
-                    <button className='list_item_up_arrow' onClick={this.props.moveUp.bind(this, key)}>
+                <div className='list_item_button_container'> 
+                    <button className={this.showDisabledUp()} onClick={(e) => this.props.moveUp(e, key)}>
                         &#8593;
                     </button>
                 </div>
                 <div className='list_item_button_container'>
-                    <button className='list_item_down_arrow'  onClick={this.props.moveDown.bind(this, key)}>
+                    <button className={this.props.showDisabledDown(key)}  onClick={(e) => this.props.moveDown(e, key)}>
                         &#8595;
                     </button>
                 </div>
-                <div className='list_item_button_container' onClick={this.props.deleteItem.bind(this, key)}>
+                <div className='list_item_button_container' onClick={(e) => this.props.deleteItem(e, key)}>
                     <button className='list_item_delete'>
                         &#x2715;
                     </button>

@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import ListItemCard from './ListItemCard'
 
 export class ListItemsTable extends Component {
+
+    showDisabledDown = (key) => {
+        return key == this.props.todoList.items.length - 1? 'list_item_up_arrow disabled': 'list_item_up_arrow';
+    }
+
     render() {
         return (
             <div id="list_items_container">
@@ -18,11 +23,14 @@ export class ListItemsTable extends Component {
                             listItem={todoItem} 
                             moveUp={this.props.moveUp}
                             moveDown={this.props.moveDown} 
-                            deleteItem={this.props.deleteItem}/>
+                            deleteItem={this.props.deleteItem}
+                            editListItem={this.props.editListItem}
+                            showDisabledDown={this.showDisabledDown}
+                            />
                     ))
                 }
                 <div>
-                    <button className="list_item_add_button">&#8853;</button>
+                    <button className="list_item_add_button" onClick={this.props.addNewItem}>&#8853;</button>
                 </div>
             </div>
         )

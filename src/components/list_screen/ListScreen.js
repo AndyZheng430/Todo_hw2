@@ -28,7 +28,7 @@ export class ListScreen extends Component {
     setListOwner(e) {
         this.props.todoList.owner = e.target.value;
     }
-    moveUp = (key) => {
+    moveUp = (e, key) => {
         if(key != 0) {
             var up = this.props.todoList.items[key-1];
             up.key = key;
@@ -38,8 +38,9 @@ export class ListScreen extends Component {
             this.props.todoList.items[key] = up;
             this.forceUpdate();
         }
+        e.stopPropagation();
     }
-    moveDown = (key) => {
+    moveDown = (e, key) => {
         if(key != this.props.todoList.items.length-1) {
             var down = this.props.todoList.items[key+1];
             down.key = key;
@@ -49,10 +50,15 @@ export class ListScreen extends Component {
             this.props.todoList.items[key] = down;
             this.forceUpdate();
         }
+        e.stopPropagation();
     }
-    deleteItem = (key) => {
+    deleteItem = (e, key) => {
         this.props.todoList.items.splice(key, 1);
+        for (var i = 0; i < this.props.todoList.items.length; i++) {
+            this.props.todoList.items[i].key = i;
+        }
         this.forceUpdate();
+        e.stopPropagation();
     }
     organizeItem(criteria) {
         if (criteria == "description") {
@@ -140,7 +146,10 @@ export class ListScreen extends Component {
                     moveUp={this.moveUp} 
                     moveDown={this.moveDown} 
                     deleteItem={this.deleteItem}
-                    organizeItem={this.organizeItem}/>
+                    organizeItem={this.organizeItem}
+                    editListItem={this.props.editListItem}
+                    addNewItem={this.props.addNewItem}
+                    />
                 <div className="modal">
                     <div className="modal_dialog">
                         <p>Delete list?</p> 
