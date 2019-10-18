@@ -8,6 +8,9 @@ export default class transactionSort{
     doTransaction() {
         var newList = this.list;
         newList.items = this.updatedList.items;
+        for(var i = 0; i < newList.items.length; i++) {
+            newList.items[i].key = i;
+        }
         this.list = newList;
     }
 

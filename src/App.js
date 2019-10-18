@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import testTodoListData from './TestTodoListData.json'
-import HomeScreen from './components/home_screen/HomeScreen'
-import ItemScreen from './components/item_screen/ItemScreen'
-import ListScreen from './components/list_screen/ListScreen'
-import transactionMoveUp from './components/lib/transactionMoveUp.js'
-import jsTPS from './components/lib/jsTPS.js'
+import testTodoListData from './TestTodoListData.json';
+import HomeScreen from './components/home_screen/HomeScreen';
+import ItemScreen from './components/item_screen/ItemScreen';
+import ListScreen from './components/list_screen/ListScreen';
+import transactionMoveUp from './components/lib/transactionMoveUp.js';
+import jsTPS from './components/lib/jsTPS.js';
 import transactionSort from './components/lib/transactionSort.js';
-import transactionMoveDown from './components/lib/transactionMoveDown.js'
+import transactionMoveDown from './components/lib/transactionMoveDown.js';
 import transactionDelete from './components/lib/transactionDelete.js';
 import transactionName from './components/lib/transactionName.js';
-import transactionOwner from './components/lib/transactionOwner.js'
-
+import transactionOwner from './components/lib/transactionOwner.js';
+import transactionEditItem from './components/lib/transactionEditItem.js';
+import transactionNewItem from './components/lib/transactionNewItem.js';
 var ascState = "";
 var ascBool = false;
 
@@ -80,11 +81,31 @@ class App extends Component {
   }
 
   changeItem = () => {
+    var oldList = {
+      key: this.state.currentItem.key,
+      description: this.state.currentItem.description,
+      due_date: this.state.currentItem.due_date,
+      assigned_to: this.state.currentItem.assigned_to,
+      completed: this.state.currentItem.completed
+    }
+
     this.state.currentItem.description = document.getElementById("item_description_textfield").value;
     this.state.currentItem.assigned_to = document.getElementById("item_assigned_to_textfield").value;
     this.state.currentItem.due_date = document.getElementById("item_due_date_picker").value;
-    this.state.currentItem.completed = document.getElementById("item_completed_checkbox").value;
+    this.state.currentItem.completed = document.getElementById("item_completed_checkbox").checked;
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
+    
+    var newList = {
+      key: this.state.currentItem.key,
+      description: this.state.currentItem.description,
+      due_date: this.state.currentItem.due_date,
+      assigned_to: this.state.currentItem.assigned_to,
+      completed: this.state.currentItem.completed
+    }
+    var editTransaction = new transactionEditItem(this.state.currentList, oldList, newList, oldList.key);
+    this.state.tps.addTransaction(editTransaction);
+
+    this.setState({currentList: this.state.currentList});
   }
 
   addNewItem = () => {
@@ -95,8 +116,8 @@ class App extends Component {
       completed: false,
       key: this.state.currentList.items.length
     };
-    this.state.currentList.items.push(obj);
-    console.log(this.state.currentList.items[this.state.currentList.items.length - 1]);
+    var newItemTransaction = new transactionNewItem(this.state.currentList, obj);
+    this.state.tps.addTransaction(newItemTransaction);
     this.setState({currentItem: this.state.currentList.items[this.state.currentList.items.length - 1]});
     this.setState({currentScreen: AppScreen.ITEM_SCREEN});
   }
@@ -184,9 +205,15 @@ class App extends Component {
       oldList.items.push(this.state.currentList.items[i]);
     }
     this.organizeItem(criteria);
-    var newList = this.state.currentList;
-    console.log(oldList.items);
-    console.log(newList.items);
+    var newList = {
+      "key": this.state.currentList.key,
+      "name": this.getListName(),
+      "owner": this.getListOwner(),
+      "items": []
+    }
+    for(var i = 0; i < this.state.currentList.items.length; i++) {
+      newList.items.push(this.state.currentList.items[i]);
+    }
     var sortTransaction = new transactionSort(this.state.currentList, oldList, newList);
     this.state.tps.addTransaction(sortTransaction);
 
@@ -247,12 +274,13 @@ class App extends Component {
     this.state.tps.doTransaction();
     console.log('REDO');
     this.setState({currentList: this.state.currentList});
+    console.log(this.state.currentList.items);
   }
   undo() {
     this.state.tps.undoTransaction();
     console.log('UNDO');
     this.setState({currentList: this.state.currentList});
-    console.log(this.state.currentList);
+    console.log(this.state.currentList.items);
   }
   detectKeyPress = (e) => {
     if(this.state.currentScreen == 'LIST_SCREEN') {
