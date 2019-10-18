@@ -11,9 +11,9 @@ export class ListItemsTable extends Component {
         return (
             <div id="list_items_container">
                 <div id="list_item_header">
-                    <div className="list_item_task_header" onClick={this.props.organizeItem.bind(this, "description")}>Task</div>
-                    <div className="list_item_due_date_header" onClick={this.props.organizeItem.bind(this, "due_date")}>Due Date</div>
-                    <div className="list_item_status_header" onClick={this.props.organizeItem.bind(this, "status")}>Status</div>
+                    <div className="list_item_task_header" onClick={this.props.sortItem.bind(this, "description")}>Task</div>
+                    <div className="list_item_due_date_header" onClick={this.props.sortItem.bind(this, "due_date")}>Due Date</div>
+                    <div className="list_item_status_header" onClick={this.props.sortItem.bind(this, "status")}>Status</div>
                 </div>
                 {
                     // mapping the key and listItem for each Todo 
